@@ -20,7 +20,7 @@ connection.once('open', function() {
 })
 
 homeRoutes.route('/').get(function(req, res) {
-    Home.gind(function(err, homes) {
+    Home.find(function(err, homes) {
         if (err) {
             console.log(err);
         } else {
@@ -43,7 +43,7 @@ homeRoutes.route('/add').post(function(req, res) {
         res.status(200).json({'home': 'home added successfully'});
 
     })
-    .cath(err => {
+    .catch(err => {
         res.status(400).send('new home addition failed');
     });
 });
@@ -57,10 +57,18 @@ homeRoutes.route('/update/:id').post(function(req, res) {
             home.home_bedrooms = req.body.home_bedrooms;
             home.home_bathrooms = req.body.home_bathrooms;
             home.home_sqfeet = req.body.home_sqfeet;
-            home.home_completed
-      }
-    )
-})
+            home.home_completed = req.body.home_completed;
+
+            home.save().then(home => {
+                res.json('Home Info Updated');
+            })
+            .catch(err => {
+                res.status(400).send("Not Able to Update");
+            });
+
+      });
+    
+});
 
 app.use('/homes', homeRoutes);
 
