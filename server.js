@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const homeRoutes = express.Router();
-const router = express.Router();
+// const router = express.Router();
 const Home = require("./home.model")
 
 const PORT = 4000;

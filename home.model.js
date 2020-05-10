@@ -21,18 +21,18 @@ const Home = new Schema({
         required: true,
 
     },
-    home_url: {
-        type: Image,
-        required: true,
-    },
-    home_fp1_url: {
-        type: Image,
-        required: true,
-    },
-    home_fp2_url: {
-        type: Image,
-        required: true,
-    }
+    // home_url: {
+    //     type: Image,
+    //     required: true,
+    // },
+    // home_fp1_url: {
+    //     type: Image,
+    //     required: true,
+    // },
+    // home_fp2_url: {
+    //     type: Image,
+    //     required: true,
+    // }
 
     home_completed: {
         type: Boolean
