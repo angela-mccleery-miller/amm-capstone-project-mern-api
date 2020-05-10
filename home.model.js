@@ -1,20 +1,39 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let Home = new Schema({
+const Home = new Schema({
     home_planName: {
-        type: String
+        type: String,
+        required: true,
        
     },
     home_bedrooms: {
-        type: String
+        type: String,
+        required: true,
     },
     home_bathrooms: {
-        type: String
+        type: String,
+        required: true,
+
     },
     home_sqfeet: {
-        type: String
+        type: String,
+        required: true,
+
     },
+    home_url: {
+        type: Image,
+        required: true,
+    },
+    home_fp1_url: {
+        type: Image,
+        required: true,
+    },
+    home_fp2_url: {
+        type: Image,
+        required: true,
+    }
+
     home_completed: {
         type: Boolean
     }
