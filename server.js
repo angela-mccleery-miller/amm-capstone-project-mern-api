@@ -71,14 +71,14 @@ homeRouter.route('/update/:id').post(function(req, res) {
         if (!home)
             res.status(404).send('ANGELA: This home is not found');
         else
-            home.home_planName = req.body.home_planName;
-            home.home_bedrooms = req.body.home_bedrooms;
-            home.home_bathrooms = req.body.home_bathrooms;
-            home.home_sqfeet = req.body.home_sqfeet;
+            home.planName = req.body.planName;
+            home.bedrooms = req.body.bedrooms;
+            home.bathrooms = req.body.bathrooms;
+            home.sqfeet = req.body.sqfeet;
             home.url = req.body.url;
             home.fp1_url = req.body.fp1_url;
             home.fp2__url = req.body.fp2__url;
-            // home.home_completed = req.body.home_completed;
+            // home.completed = req.body.completed;
 
             home.save().then(home => {
                 res.json('ANGELA: Home Info Updated');
