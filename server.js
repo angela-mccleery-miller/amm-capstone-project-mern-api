@@ -3,9 +3,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const homeRoutes = express.Router();
+const homeRouter = express.Router();
 // const router = express.Router();
-const Home = require("./home.model")
+const Home = require("./home-model")
 
 const PORT = 4000;
 
@@ -14,15 +14,19 @@ const PORT = 4000;
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/myHomesList', { useNewUrlParser: true});
-const connection = mongoose.connection;
+mongoose.connect('mongodb://localhost:27017/home-builders', { useNewUrlParser: true}, () => {
+    try {
+        console.log("ANGELA: MongoDB database connected successfully");
+        
+    } catch (error) {
+        console.log("db failed");
+        
+    }
 
-connection.once('open', function() {
-    console.log("ANGELA: MongoDB database connected successfully");
-})
+});
 
-homeRoutes.route('/').get(function(req, res) {
-    Home.find(function(err, homes) {
+homeRouter.route('/').get(function(req, res) {
+    Home.find((err, homes) =>{
         if (err) {
             console.log(err);
         } else {
@@ -31,14 +35,25 @@ homeRoutes.route('/').get(function(req, res) {
     });
 })
 
-homeRoutes.route('/:id').get(function(req, res) {
+homeRouter.route('/:id').get(function(req, res) {
     let id = req.params.id;
     Home.findById(id, function(err, home){
         res.json(home);
     });
 });
+
+homeRouter.post("/add-many", (req, res) => {
+    Home.insertMany(req.body, (err, results) => {
+        if(err){
+            res.status(400).json(err)
+        } else {
+            res.status(200).json(results)
+        }
+    })
+})
+
 // create new/add
-homeRoutes.route('/add').post(function(req, res) {
+homeRouter.route('/add').post(function(req, res) {
     let home = new Home(req.body);
     home.save()
     .then(home => {
@@ -51,7 +66,7 @@ homeRoutes.route('/add').post(function(req, res) {
 });
 
 // put / patch
-homeRoutes.route('/update/:id').post(function(req, res) {
+homeRouter.route('/update/:id').post(function(req, res) {
     Home.findById(req.params.id, function(err, home) {
         if (!home)
             res.status(404).send('ANGELA: This home is not found');
@@ -74,7 +89,7 @@ homeRoutes.route('/update/:id').post(function(req, res) {
       });
 });
 
-// homeRoutes.delete("/delete/:id", (req, res) => {
+// homeRouter.delete("/delete/:id", (req, res) => {
 //     Home.findByIdAndRemove(req.params.id, function(err, home) => {
         
 //         if(err) {
@@ -103,7 +118,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use('/homes', homeRoutes);
+app.use('/homes', homeRouter);
 
 app.listen(PORT, () => {
     console.log("Server is running on Port: " + PORT);
