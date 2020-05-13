@@ -8,7 +8,7 @@ const homeRouter = express.Router();
 // const router = express.Router();
 const Home = require("./home-model")
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 const app = express();
 
 
