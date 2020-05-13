@@ -12,7 +12,9 @@ const PORT = process.env.PORT || 4000;
 const app = express();
 
 
-app.use(cors());
+app.use(cors({
+    allowedHeaders: "Access-Control-Allow-Origin"
+}));
 app.use(bodyParser.json());
 
 // mongoose.connect(
