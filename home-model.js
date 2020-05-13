@@ -38,4 +38,3 @@ const Home = new Schema({
 });
 
 module.exports = mongoose.model("Homes", Home);
-

@@ -1,5 +1,6 @@
+require("dotenv").config()
+
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -8,21 +9,37 @@ const homeRouter = express.Router();
 const Home = require("./home-model")
 
 const PORT = 4000;
-
+const app = express();
 
 
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost:27017/home-builders', { useNewUrlParser: true}, () => {
-    try {
-        console.log("ANGELA: MongoDB database connected successfully");
-        
-    } catch (error) {
-        console.log("db failed");
-        
-    }
+// mongoose.connect(
+//     // process.env.MONGODB_URI,
+//     'mongodb://localhost:27017/home-builders', 
+//     { useNewUrlParser: true}, () => {
+//         // { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
 
+//     try {
+//         console.log("ANGELA: MongoDB database connected successfully");
+        
+//     } catch (error) {
+//         console.log("ANGELA: Your db failed");
+        
+//     }
+
+// });
+mongoose.set("useCreateIndex", true);
+mongoose.Promise = global.Promise;
+mongoose
+    //.connect('mongodb://localhost:27017/home-builders', { useNewUrlParser: true })
+    .connect(process.env.MONGODB_URI, { useNewUrlParser: true })
+    .then(() => {
+    console.log("ANGELA: MongoDB database connected successfully");
+    })
+    .catch(error => {
+        console.log("connection error", error);
 });
 
 homeRouter.route('/').get(function(req, res) {
@@ -89,28 +106,29 @@ homeRouter.route('/update/:id').post(function(req, res) {
       });
 });
 
-// homeRouter.delete("/delete/:id", (req, res) => {
-//     Home.findByIdAndRemove(req.params.id, function(err, home) => {
+homeRouter.delete("/delete/:id", (req, res) => {
+    Home.findByIdAndRemove(req.params.id, function(err, home) {
         
-//         if(err) {
-//             res
-//             .status(500)
-//             .json({ error: true, message: "ANGELA: SORRY! Could not Delete"});
-//         } else if(home) {
-//             res
-//             .status(200)
-//             .json({ 
-//                 message: "ANGELA: PARTY. Successfully deleted", 
-//                 id: home._id });
-//             } else {
-//                 res.status(500)
-//             .json({ error: true,
-//                 message: "ANGELA: WHOA. Successfully deleted", 
-//                 id: home._id })
-//             }
-//         }
-//     )        
-// });
+        if(err) {
+            res
+            .status(500)
+            .json({ error: true, message: "ANGELA: SORRY! Could not Delete"});
+        } else if(home) {
+          
+            res
+            .status(200)
+            .json({ 
+                message: "ANGELA: PARTY. Successfully deleted", 
+                id: home._id });
+            } else {
+                res.status(500)
+            .json({ error: true,
+                message: "ANGELA: WHOA. Successfully deleted", 
+                id: home._id })
+            }
+        }
+    )        
+});
 
 
 
