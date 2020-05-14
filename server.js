@@ -94,6 +94,7 @@ homeRouter.route('/update/:id').post(function(req, res) {
             home.bedrooms = req.body.bedrooms;
             home.bathrooms = req.body.bathrooms;
             home.sqfeet = req.body.sqfeet;
+            home.stories = req.body.stories;
             home.url = req.body.url;
             home.fp1_url = req.body.fp1_url;
             home.fp2__url = req.body.fp2__url;

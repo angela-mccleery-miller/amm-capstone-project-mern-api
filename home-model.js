@@ -18,6 +18,10 @@ const Home = new Schema({
     type: String,
     required: true,
   },
+  stories: {
+    type: String,
+    required: true,
+  },
   url: {
       type: String,
       required: true,
